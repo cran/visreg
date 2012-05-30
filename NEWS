@@ -3,6 +3,13 @@
 *** Major change
 
 1.1-0
+      *  Added support for multiple response (class 'mlm') models
+      *  Fixed bug in 'ask' behavior when multiple plots created
+      *  Allow finer control of plots with line.par, fill.par, points.par
+      *  Fixed bug with formatting names for locfit objects
+      *  Fixed bug with visregFactorPanel when partial=FALSE
+      *  Changed default for ylabels to las=1 (always horizontal) 
+      	 (Thank you to Doug Bates for this advice)
 
 1.0-0
       *** Submitted to CRAN
