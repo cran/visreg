@@ -1,7 +1,7 @@
 Package: visreg
 Title: Visualization of regression models
-Version: 1.2-0
-Date: 2013-01-20
+Version: 1.2-1
+Date: 2013-02-19
 Author: Patrick Breheny, Woodrow Burchett
 Maintainer: Patrick Breheny <patrick.breheny@uky.edu>
 Depends: lattice
@@ -12,6 +12,7 @@ Description: Provides convenient interface for constructing plots to
 License: GPL-2
 URL:
         http://web.as.uky.edu/statistics/users/pbreheny/publications/visreg.pdf
-Packaged: 2013-01-20 15:20:19 UTC; pbreheny
+Packaged: 2013-02-20 19:52:10 UTC; pbreheny
+NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-01-20 17:23:11
+Date/Publication: 2013-02-21 07:53:02
