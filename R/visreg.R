@@ -1,39 +1,38 @@
-visreg <- function(fit, xvar, by, breaks=4, type=c("conditional","effect"), trans=I, scale=c("linear","response"), xtrans, alpha=.05, nn=101, cond=list(), whitespace=0.2, partial=TRUE, jitter=FALSE, strip.names=FALSE, line.par=NULL, fill.par=NULL, points.par=NULL, ...)
-{
+visreg <- function(fit, xvar, by, overlay=FALSE, breaks=3, type=c("conditional", "contrast", "effect"), trans=I, scale=c("linear","response"), xtrans, 
+                   alpha=.05, nn=101, cond=list(), print.cond=missing(by) & (max(attr(terms(formula(fit)), "order"))>1), whitespace=0.2, 
+                   partial=(!rug), band=TRUE, rug=FALSE, jitter=FALSE, strip.names=is.numeric(attr(v, "lev")), legend=TRUE, ask=TRUE, line.par=NULL, fill.par=NULL, points.par=NULL, ...) {
+  ## Setup
   type <- match.arg(type)
   scale <- match.arg(scale)
-  if (!missing(by) & !missing(cond)) stop("Cannot specify 'by' and 'cond' simultaneously")
   if (scale=="response") trans <- family(fit)$linkinv
-  
-  f <- setupF(fit)
-  if (missing(xvar)) xvar <- names(f)[-1]
-  for (i in 1:length(xvar)){if (!is.element(xvar[i],names(f))) stop(paste(xvar[i],"not in model"))}
-  if ((!missing(by) & missing(xvar)) | (!missing(by) & (length(xvar) > 1))) stop("Cannot specify 'by' and multiple x variables simultaneously")
-  if (!missing(by) && is.numeric(f[,by]) && length(levels(as.factor(f[,by]))) <= breaks) {
-    attr(f,"needs.update") <- TRUE
-    f[,by] <- as.factor(f[,by])
-    warning("'By' variable has too few unique values and has been coerced to a factor")
+  if (type=="effect") {
+    warning("Please note that type='effect' is deprecated and may not be supported in future versions of visreg.  Use type='contrast' instead.")
+    type <- "contrast"
   }
-  if (attr(f,"needs.update")) fit <- update(fit,data=f)
-  #fit$residuals <- r
-  cond <- setupCond(cond,f,by,breaks)
   
-  n.y <- if (class(fit)[1]=="mlm") ncol(coef(fit)) else 1
-  n.plots <- length(xvar) * n.y
-  if (n.plots > 1 && prod(par("mfcol")) < n.plots && dev.interactive() && missing(by)) {
-    oask <- devAskNewPage(TRUE)
-    on.exit(devAskNewPage(oask))
+  f <- setupF(fit, xvar)
+  xvar <- attr(f, "xvar")
+  if (attr(f, "needsUpdate")) fit <- update(fit, data=f)
+  cond <- setupCond(cond, f, by, breaks)
+  
+  ## Calculate v
+  v <- setupV(fit, f, xvar, nn, cond, type, trans, xtrans, alpha, jitter, ...)
+  attr(v, "yNameClass") <- if (scale=="response" | (class(fit)[1] %in% c("lm", "mlm") & identical(trans,I))) {if (type=="contrast") 1 else 2} else 3
+  if (!missing(by)) {
+    attr(v, "by") <- by
+    v <- subsetV(v, f, by)
   }
-
+  
+  ## Plot
   if (missing(by)) {
-    v <- vector("list",length(xvar))
-    for (i in 1:length(xvar)) {
-      v[[i]] <- visregPlot(fit, f, xvar[i], nn, cond[[1]], type, trans, xtrans, alpha, jitter, partial, whitespace, line.par, fill.par, points.par, ...)
-    }
-    names(v) <- xvar
-    if (length(xvar)==1) v <- v[[1]]
+    visregPlot(v, partial, band, rug, ask, whitespace, print.cond, line.par, fill.par, points.par, ...)
+  } else if (overlay) {
+    visregOverlayPlot(v, partial, band, rug, ask, whitespace, strip.names, line.par, fill.par, points.par, ...)
+    if (print.cond) printCond(v)
   } else {
-    v <- visregLatticePlot(fit, f, xvar, nn, cond, type, trans, xtrans, alpha, jitter, partial, whitespace, by, strip.names, line.par, fill.par, points.par, ...)
+    visregLatticePlot(v, partial, band, rug, ask, whitespace, legend, line.par, fill.par, points.par, ...)
+    if (print.cond) printCond(v)
   }
+  
   invisible(v)
 }
