@@ -9,8 +9,8 @@
 \tabular{ll}{
 Package: \tab visreg\cr
 Type: \tab Package\cr
-Version: \tab 2.0-0\cr
-Date: \tab 2013-05-23\cr
+Version: \tab 2.0-1\cr
+Date: \tab 2013-08-09\cr
 License: \tab GPL-2\cr
 LazyLoad: \tab yes\cr}
 This package allows the use of visreg and visreg2d, functions for
@@ -20,11 +20,11 @@ Also see the cited manuscript for additional details.
 }
 \author{Patrick Breheny and Woodrow Burchett
   
-Maintainer: Patrick Breheny <patrick.breheny@uky.edu>}
+Maintainer: Patrick Breheny <patrick-breheny@uiowa.edu>}
 \references{
   Breheny, P. and Burchett, W. (2013), Visualizing regression models
   using visreg.
-  \url{http://web.as.uky.edu/statistics/users/pbreheny/publications/visreg.pdf}
+  \url{http://myweb.uiowa.edu/pbreheny/publications/visreg.pdf}
 }
 \keyword{ package }
 \seealso{
