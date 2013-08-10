@@ -40,3 +40,22 @@ df <- data.frame(c=rnorm(100), d=factor(rep(1:10,10)), y=rnorm(100))
 fit <- lm(y~a+b+c+d, df)
 par(mfrow=c(2,2))
 visreg(fit)
+
+## Data not in global scope
+myFun <- function(form) {
+  Data <- data.frame(x=rnorm(100), y=rnorm(100), z=rnorm(100))
+  fit <- lm(form, data=Data)
+  print(environment())
+  print(environment(fit$terms))
+  visreg(fit)
+  visreg2d(fit,"x","y")
+}
+myFun(z~x+y)
+
+## Missing factor levels
+x <- factor(rep(LETTERS[1:5],rep(5,5)))
+y <- rnorm(length(x))
+y[11:15] <- NA
+fit <- lm(y~x)
+visreg(fit)
+visreg(fit, type='contrast')
