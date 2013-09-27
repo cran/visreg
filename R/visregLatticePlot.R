@@ -13,8 +13,10 @@ visregLatticePlot <- function(v, partial, band, rug, ask, whitespace, strip.name
       }
       lframe.i <- data.frame(xx=x$xx, fit=y$fit, upr=y$upr, lwr=y$lwr, by=lev[i])
       lframe <- rbind(lframe, lframe.i)
-      lresids.i <- data.frame(x=x$x, r=y$r, pos=y$pos, by=lev[i])
-      lresids <- rbind(lresids, lresids.i)
+      if (length(x$x)) {
+        lresids.i <- data.frame(x=x$x, r=y$r, pos=y$pos, by=lev[i])
+        lresids <- rbind(lresids, lresids.i)        
+      }
     }
     lframe$by <- factor(lframe$by, levels=lev)
     lresids$by <- factor(lresids$by, levels=lev)
@@ -25,8 +27,8 @@ visregLatticePlot <- function(v, partial, band, rug, ask, whitespace, strip.name
     
     if (x$factor) xlim <- c(0,1) else xlim <- range(x$xx)
     if (partial) {
-      ylim <- range(c(lresids$r, lframe$lwr, lframe$upr))
-    } else ylim <- range(c(lframe$lwr, lframe$upr))
+      ylim <- range(c(lresids$r, lframe$lwr, lframe$upr), na.rm=TRUE)
+    } else ylim <- range(c(lframe$fit, lframe$lwr, lframe$upr), na.rm=TRUE)
     pad <- 0.05*diff(ylim)
     ylim[1] <- ylim[1]-pad
     ylim[2] <- ylim[2]+pad
@@ -37,22 +39,33 @@ visregLatticePlot <- function(v, partial, band, rug, ask, whitespace, strip.name
                    as.expression(substitute(list(Delta) * x,list(x=y$name))),
                    y$name,
                    paste("f(", x$name, ")", sep=""))
-    plot.args <- list(x=formula(lframe$fit~lframe$xx | lframe$by), type="l", ylim=ylim, xlab=x$name, ylab=ylab, lframe=lframe, lresids=lresids, partial=partial, band=band, rug=rug, xlim=xlim, strip=strip.custom(strip.names=strip.names, var.name=attr(v, "by")), fill.par=fill.par)
     new.args <- list(...)
+    if (is.logical(strip.names)) {
+      strip <- strip.custom(strip.names=strip.names, var.name=attr(v, "by"))
+    } else {
+      strip <- strip.custom(factor.levels=strip.names)
+    }
+    plot.args <- list(x=formula(lframe$fit~lframe$xx | lframe$by), type="l", ylim=ylim, xlab=x$name, ylab=ylab, lframe=lframe, lresids=lresids, partial=partial, band=band, rug=rug, xlim=xlim, strip=strip, fill.par=fill.par)
     if (length(new.args)) plot.args[names(new.args)] <- new.args
     if (is.null(dev.list())) trellis.device()
     opar <- trellis.par.get()
-    line.args <- list(lwd=2)
+    line.args <- list(lwd=3, col="#008DFFFF")
     if (length(line.par)) line.args[names(line.par)] <- line.par
     trellis.par.set(plot.line=line.args)
-    points.args <- list(cex=0.4, pch=19)
+    points.args <- list(cex=0.4, pch=19, col="gray50")
     if (length(points.par)) points.args[names(points.par)] <- points.par
     trellis.par.set(plot.symbol=points.args)
     if (x$factor) {
       K <- length(levels(x$x))
       len <- K*(1-whitespace)+(K-1)*whitespace
       scales <- list(x=list(at=((0:(K-1))/len+(1-whitespace)/(2*len)),labels=levels(x$x)))
-      plot.args$scales <- scales
+      if (is.null(plot.args$scales)) {
+        plot.args$scales <- scales
+      } else if (is.null(plot.args$scales$x)) {
+        plot.args$scales$x <- scales$x
+      } else {
+        plot.args$scales$x <- c(plot.args$scales$x, scales)
+      }
       plot.args$panel <- visregFactorPanel
       plot.args$w <- whitespace
       tp <- do.call("xyplot", plot.args)
