@@ -91,8 +91,8 @@
     package:
 
     \code{utils::data(Insurance, package="MASS")}\cr
-    \code{fit <- glm(Claims ~ District + Group + Age +
-      offset(log(Holders)), data = Insurance, family = poisson)}\cr
+    \code{fit <- glm(Claims ~ District + Group + Age +}\cr
+    \code{  offset(log(Holders)), data = Insurance, family = poisson)}\cr
     \code{visreg(fit, "Group", scale="response")}\cr
 
     This will provide the model's predictions for the expected number of

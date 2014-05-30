@@ -39,18 +39,19 @@ line.par=NULL, fill.par=NULL, points.par=NULL, ...)
   
   \item{overlay}{
     When \code{by} is specified, by default separate panels are used to
-    display each cross-section.  If \code{overlay=TRUE}, these cross-sections
-    are overlaid on top of each other in a single plot.
+    display each cross-section.  If \code{overlay=TRUE}, these
+    cross-sections are overlaid on top of each other in a single plot.
   }
   
   \item{breaks}{
-    If a continuous variable is used for the \code{by} option, the \code{breaks}
-    argument controls the values at which the cross-sections are taken.
-    By default, cross-sections are taken at the 10th, 50th, and 90th quantiles.
-    If \code{breaks} is a single number, it specifies the number of breaks.
-    If \code{breaks} is a vector of numbers, it specifies the values
-    at which the cross-sections are to be taken.  Each partial residuals
-    appears exactly once in the plot, in the panel it is closest to. 
+    If a continuous variable is used for the \code{by} option, the
+    \code{breaks} argument controls the values at which the
+    cross-sections are taken.  By default, cross-sections are taken at
+    the 10th, 50th, and 90th quantiles.  If \code{breaks} is a single
+    number, it specifies the number of breaks.  If \code{breaks} is a
+    vector of numbers, it specifies the values at which the
+    cross-sections are to be taken.  Each partial residuals appears
+    exactly once in the plot, in the panel it is closest to.
   }
   
   \item{type}{
@@ -59,17 +60,18 @@ line.par=NULL, fill.par=NULL, points.par=NULL, ...)
     \itemize{
       \item If 'conditional' is selected, the plot returned shows the
       value of the variable on the x-axis and the change in response on
-      the y-axis, holding all other variables constant (by default, median
-      for numeric variables and most common category for factors).
-      \item If 'contrast' is selected, the plot returned shows the effect
-      on the expected value of the response by moving the x variable away
-      from a reference point on the x-axis (for numeric variables, this is
-      taken to be the mean).
+      the y-axis, holding all other variables constant (by default,
+      median for numeric variables and most common category for
+      factors).  \item If 'contrast' is selected, the plot returned
+      shows the effect on the expected value of the response by moving
+      the x variable away from a reference point on the x-axis (for
+      numeric variables, this is taken to be the mean).
     }
     For more details, see references.
   }
   \item{trans}{
-    (Optional) A function specifying a transformation for the vertical axis.
+    (Optional) A function specifying a transformation for the vertical
+    axis.
   }
   \item{scale}{
     By default, the model is plotted on the scale of the linear
@@ -78,44 +80,46 @@ line.par=NULL, fill.par=NULL, points.par=NULL, ...)
     of the original response.
   }
   \item{xtrans}{
-    (Optional) A function specifying a transformation for the horizontal axis.
-    Note that, for model terms such as \code{log(x)}, visreg automatically
-    plots on the original axis (see examples).
+    (Optional) A function specifying a transformation for the horizontal
+    axis.  Note that, for model terms such as \code{log(x)}, visreg
+    automatically plots on the original axis (see examples).
   }
   \item{alpha}{
-    Alpha level (1-coverage) for the confidence band displayed in the plot
-    (default: 0.05).
+    Alpha level (1-coverage) for the confidence band displayed in the
+    plot (default: 0.05).
   }
   \item{nn}{
     Controls the smoothness of the line and confidence band.  Increasing
-    this number will add to the computational burden, but produce a smoother
-    plot (default: 101).
+    this number will add to the computational burden, but produce a
+    smoother plot (default: 101).
   }
   \item{cond}{
-    Named list specifying conditional values of other explanatory variables.
-    By default, conditional plots in visreg are constructed by filling in 
-    other explanatory variables with the median (for numeric variables) or 
-    most common category (for factors), but this can be overridden by specifying
-    their values using \code{cond} (see examples).
+    Named list specifying conditional values of other explanatory
+    variables.  By default, conditional plots in visreg are constructed
+    by filling in other explanatory variables with the median (for
+    numeric variables) or most common category (for factors), but this
+    can be overridden by specifying their values using \code{cond} (see
+    examples).
   }
   \item{print.cond}{
-    If \code{print.cond=TRUE}, the explanatory variable values conditioned on
-    in a conditional plot are printed to the console (default: \code{FALSE}).
-    If \code{print.cond=TRUE} and \code{type="contrast"}, the conditions will
-    still be printed, but they have no bearing on the plot unless interactions
-    are present.
+    If \code{print.cond=TRUE}, the explanatory variable values
+    conditioned on in a conditional plot are printed to the console
+    (default: \code{FALSE}).  If \code{print.cond=TRUE} and
+    \code{type="contrast"}, the conditions will still be printed, but
+    they have no bearing on the plot unless interactions are present.
   }  
   \item{whitespace}{
-    When \code{xvar} is a factor, whitespace determines the amount of space in
-    between factors on the x-axis.  Default is 0.2, meaning that 20 percent of
-    the horizontal axis is whitespace.
+    When \code{xvar} is a factor, whitespace determines the amount of
+    space in between factors on the x-axis.  Default is 0.2, meaning
+    that 20 percent of the horizontal axis is whitespace.
   }
   \item{partial}{
     If \code{partial=TRUE} (the default), partial residuals are shown on
-    the plot. 
+    the plot.
   }
   \item{band}{
-    If \code{band=TRUE} (the default), confidence bands are shown on the plot.
+    If \code{band=TRUE} (the default), confidence bands are shown on the
+    plot.
   }
   \item{rug}{
     By default, partial residuals are plotted.  Alternatively, a
@@ -130,8 +134,8 @@ line.par=NULL, fill.par=NULL, points.par=NULL, ...)
     particularly useful in logistic regression (see examples).
   }
   \item{jitter}{
-    Adds a small amount of noise to \code{xvar}.  Potentially useful if many
-    observations have exactly the same value.  Default is FALSE.
+    Adds a small amount of noise to \code{xvar}.  Potentially useful if
+    many observations have exactly the same value.  Default is FALSE.
   }
   \item{strip.names}{
     When \code{by=TRUE}, \code{strip.names=TRUE} adds the name of the
@@ -155,16 +159,17 @@ line.par=NULL, fill.par=NULL, points.par=NULL, ...)
     \code{ask=FALSE}.
   }
   \item{line.par}{
-    List of parameters (see \code{\link{par}}) to pass to \code{lines(...)}
-    when lines are drawn in the plots.
+    List of parameters (see \code{\link{par}}) to pass to
+    \code{lines(...)}  when lines are drawn in the plots.
   }
   \item{fill.par}{
-    List of parameters (see \code{\link{par}}) to pass to \code{polygon(...)}
-    when shaded confidence regions are drawn in the plots.
+    List of parameters (see \code{\link{par}}) to pass to
+    \code{polygon(...)}  when shaded confidence regions are drawn in the
+    plots.
   }
   \item{points.par}{
-    List of parameters (see \code{\link{par}}) to pass to \code{points(...)}
-    when partial residuals are drawn in the plots.
+    List of parameters (see \code{\link{par}}) to pass to
+    \code{points(...)}  when partial residuals are drawn in the plots.
   }
   \item{\dots}{
     Graphical parameters can be passed to the function to customize the
@@ -214,7 +219,8 @@ visreg(fit.heat,"Heat",whitespace=.5)
 ## Transformations
 fit1 <- lm(Ozone ~ Solar.R + Wind + Temp + I(Wind^2),data=airquality)
 fit2 <- lm(log(Ozone) ~ Solar.R + Wind + Temp,data=airquality)
-fit3 <- lm(log(Ozone) ~ Solar.R + Wind + Temp + I(Wind^2),data=airquality)
+fit3 <- lm(log(Ozone) ~ Solar.R + Wind + Temp +
+  I(Wind^2),data=airquality)
 visreg(fit1,"Wind")
 visreg(fit2,"Wind",trans=exp,ylab="Ozone")
 visreg(fit3,"Wind",trans=exp,ylab="Ozone")
@@ -253,7 +259,8 @@ data("birthwt",package="MASS")
 birthwt$race <- factor(birthwt$race,labels=c("White","Black","Other"))
 birthwt$smoke <- factor(birthwt$smoke,labels=c("Nonsmoker","Smoker"))
 fit <- glm(low~age+race+smoke+lwt,data=birthwt,family="binomial")
-visreg(fit,"lwt",xlab="Mother's Weight",ylab="Log odds (low birthweight)")
+visreg(fit,"lwt",xlab="Mother's Weight",
+  ylab="Log odds (low birthweight)")
 visreg(fit, "lwt", scale="response", partial=FALSE, xlab="Mother's
 Weight", ylab="P(low birthweight)")
 visreg(fit, "lwt", scale="response", partial=FALSE, xlab="Mother's

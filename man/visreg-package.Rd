@@ -22,7 +22,7 @@ Maintainer: Patrick Breheny <patrick-breheny@uiowa.edu>}
   using visreg.
   \url{http://myweb.uiowa.edu/pbreheny/publications/visreg.pdf}
 }
-\keyword{ package }
+\keyword{package}
 \seealso{
 \code{\link{visreg}}
 \code{\link{visreg2d}}

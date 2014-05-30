@@ -5,7 +5,8 @@ Response <- function(fit, x, trans, alpha, ...) {
   if (nrow(x$D) != nr) warning("Residuals do not match data; have you changed the original data set?  If so, visreg is probably not displaying the residuals for the data set that was actually used to fit the model.")
   predict.args <- list(object=fit, newdata=x$D, level=0, REform=NA)
   dots <- list(...)
-  if (length(dots)) predict.args[names(dots)] <- dots
+  if ("level" %in% names(dots)) predict.args["level"] <- dots["level"]
+  if ("REform" %in% names(dots)) predict.args["REform"] <- dots["REform"]
   r <- suppressWarnings(do.call("predict", predict.args)) + rr
   predict.args$newdata <- x$DD
   if (class(fit)[1]=="mlm") {

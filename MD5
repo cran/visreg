@@ -1,7 +1,7 @@
-398234e9416162064c159f3c20c07d14 *DESCRIPTION
-6a3e83f771819570e2dc10963a9e770f *NAMESPACE
-2527f3ca8051f102c90b181f90cbfe6a *NEWS
-53507a8eb2b3d853fff94fe131024ad1 *R/Response.R
+1b8af1f8a64fe8f8edac95e405f26a8c *DESCRIPTION
+9f99578373533516e90c5b6fdcbc7484 *NAMESPACE
+f7bdc5e7f40e6e9fb7dec45dff7c4fa3 *NEWS
+2165e6e44d5ab8455c80559a04ef0f6b *R/Response.R
 bde1427949170d585873c19b352c2405 *R/Terms.R
 cf3d8fa904d6b8a4ee32c1daa8284711 *R/factorAxis.R
 50b1eb3718932cf5c6619fc3db1fb65f *R/factorPlot.R
@@ -27,9 +27,9 @@ a00936a1fe6161350332b84826539b13 *R/visreg.R
 28b3cd4aa070937d182e5e4b49eff180 *R/visregPanel.R
 961bbc7ddb07532e1d8ae349f396da0b *R/visregPlot.R
 80f78fef93bac550b8933f0058af4228 *inst/tests/mixed-models.R
-dac7f28a72a92ff9cf247bdc52b2609c *man/visreg-faq.Rd
-4c16a178574074a2af0674bb806cf62d *man/visreg-package.Rd
-27629281653d1190de01325535c89464 *man/visreg.Rd
+962652950750efcf5153d34d8e5b9984 *man/visreg-faq.Rd
+9494214ca8649b142cdc8bff8e418a53 *man/visreg-package.Rd
+1131b90dc70c161d7361ac6df40618a6 *man/visreg.Rd
 4d0f8adb744c466a1c58664438b3a8a9 *man/visreg2d.Rd
 ec4d6a7ecf27a1d1f09c079ca45f24a4 *tests/missing-data.R
 bc76d09a613d81a56e2085357d726319 *tests/visreg-contrast.R

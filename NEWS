@@ -1,3 +1,8 @@
+2.0-5
+      * Fixed bug arising when passing plot options such as 'xlim' when used
+      	in conjunction with lme4 models.  Thank you to Vincent Maire for
+	pointing this bug out.
+
 2.0-4
       * Added compatibility with models from the 'lme4' package
       	(Thank you to Jack Hogg for pointing out this incompatibility);
