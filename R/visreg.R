@@ -1,6 +1,6 @@
 visreg <- function(fit, xvar, by, overlay=FALSE, breaks=3, type=c("conditional", "contrast", "effect"), trans=I, scale=c("linear","response"), xtrans, 
                    alpha=.05, nn=101, cond=list(), print.cond=missing(by) & (max(attr(terms(formula(fit)), "order"))>1), whitespace=0.2, 
-                   partial=(!rug), band=TRUE, rug=FALSE, jitter=FALSE, strip.names=is.numeric(attr(v, "lev")), legend=TRUE, ask=TRUE, line.par=NULL, fill.par=NULL, points.par=NULL, ...) {
+                   partial=identical(trans, I), band=TRUE, rug=!partial, jitter=FALSE, strip.names=is.numeric(attr(v, "lev")), legend=TRUE, ask=TRUE, line.par=NULL, fill.par=NULL, points.par=NULL, ...) {
   ## Setup
   type <- match.arg(type)
   scale <- match.arg(scale)

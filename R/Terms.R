@@ -1,5 +1,5 @@
 Terms <- function(fit, f, x, trans, alpha, ...) {
-  b <- if ("lme" %in% class(fit)) fixed.effects(fit) else coef(fit)
+  b <- if ("lme" %in% class(fit)) nlme::fixed.effects(fit) else coef(fit)
   if (class(fit)[1]=="mlm") {
     summ <- summary(fit)
     n.y <- length(summ)

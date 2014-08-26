@@ -12,7 +12,7 @@ visreg(fit, xvar, by, overlay=FALSE, breaks=3, type=c("conditional",
 "contrast", "effect"), trans=I, scale=c("linear","response"), xtrans,
 alpha=.05, nn=101, cond=list(), print.cond=missing(by) &
 (max(attr(terms(formula(fit)), "order"))>1), whitespace=0.2,
-partial=(!rug), band=TRUE, rug=FALSE, jitter=FALSE,
+partial=identical(trans, I), band=TRUE, rug=!partial, jitter=FALSE,
 strip.names=is.numeric(attr(v, "lev")), legend=TRUE, ask=TRUE,
 line.par=NULL, fill.par=NULL, points.par=NULL, ...) 
 }
@@ -114,24 +114,27 @@ line.par=NULL, fill.par=NULL, points.par=NULL, ...)
     that 20 percent of the horizontal axis is whitespace.
   }
   \item{partial}{
-    If \code{partial=TRUE} (the default), partial residuals are shown on
-    the plot.
+    If \code{partial=TRUE} (the default unless a transformation has been
+    applied), partial residuals are shown on the plot.
   }
   \item{band}{
     If \code{band=TRUE} (the default), confidence bands are shown on the
     plot.
   }
   \item{rug}{
-    By default, partial residuals are plotted.  Alternatively, a
-    \code{\link{rug}} may be plotted along the horizontal axis instead.
-    Setting \code{rug=TRUE} turns off partial residuals by default; if
-    one wants both to be plotted, both \code{rug=TRUE} and
-    \code{partial=TRUE} need to be specified.  Two types of rug plots
-    are available.  If \code{rug=1} or \code{rug=TRUE}, then a basic rug
-    is drawn on the bottom.  If \code{rug=2}, then separate rugs are
-    drawn on the top for observations with positive residuals and on the
-    bottom for observations with negative residuals.  Such plots are
-    particularly useful in logistic regression (see examples).
+    A \code{\link{rug}} is an alternative to partial residuals, showing
+    the location on the horizontal axis corresponding to observations,
+    but not displaying any information along the vertical axis.  By
+    defaut, if no transformation has been applied, partial residuals are
+    plotted and a rug is not; these defaults are reversed if the
+    vertical axis has been transformed.  If one wants both to be
+    plotted, both \code{rug=TRUE} and \code{partial=TRUE} need to be
+    specified.  Two types of rug plots are available.  If \code{rug=1}
+    or \code{rug=TRUE}, then a basic rug is drawn on the bottom.  If
+    \code{rug=2}, then separate rugs are drawn on the top for
+    observations with positive residuals and on the bottom for
+    observations with negative residuals.  Such plots are particularly
+    useful in logistic regression (see examples).
   }
   \item{jitter}{
     Adds a small amount of noise to \code{xvar}.  Potentially useful if

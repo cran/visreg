@@ -1,8 +1,8 @@
-1b8af1f8a64fe8f8edac95e405f26a8c *DESCRIPTION
+1cfb6a3142223f522cbf1bf8ef097d58 *DESCRIPTION
 9f99578373533516e90c5b6fdcbc7484 *NAMESPACE
-f7bdc5e7f40e6e9fb7dec45dff7c4fa3 *NEWS
+76d838752c03bfc992697d8ea5f9c7b1 *NEWS
 2165e6e44d5ab8455c80559a04ef0f6b *R/Response.R
-bde1427949170d585873c19b352c2405 *R/Terms.R
+0317c5484edfef2abb744e3f91544664 *R/Terms.R
 cf3d8fa904d6b8a4ee32c1daa8284711 *R/factorAxis.R
 50b1eb3718932cf5c6619fc3db1fb65f *R/factorPlot.R
 814778bfd47969794df60e01a62eeb3d *R/fillFrame.R
@@ -13,13 +13,13 @@ e83a9a326949cca9d08e43a697b6d5e5 *R/pal.R
 4d83db73de8a6ad67d2a7a0886e2b0ed *R/se.mlm.R
 404c2238064afe412aaed7d46b0ff9b9 *R/setupCond.R
 2d5badd73ffcb21f4f3af99a8cc1ddb9 *R/setupD.R
-92fb4e8dbb484e64b59cf8a214f1d999 *R/setupF.R
+eddf4bc67680605c37ec1fb5a801132f *R/setupF.R
 d6cb6a1bbcf07e8ab21886f3c9f86a9a *R/setupV.R
 19b0045fa8f2a0aaa769139f0a4451f8 *R/setupV2.R
-5a061a6cea38f7ee27e2c47d06e78a13 *R/setupX.R
+611da190352f31d93b55c6d0cdef517a *R/setupX.R
 5e2b6e61ad4f9060f67e01c33f5bd4cd *R/subsetV.R
 34eaeea26fddf3470004f8dd81933628 *R/toplegend.R
-a00936a1fe6161350332b84826539b13 *R/visreg.R
+dd3095e176929b6bb40747a031b58d9f *R/visreg.R
 4ff1f1b140a74094e68fb36b575f3ca1 *R/visreg2d.R
 3e7849da4b7206211c49f1b8fb2ae583 *R/visregFactorPanel.R
 69dd7c1ae3719bfd5e327203b47583ec *R/visregLatticePlot.R
@@ -29,7 +29,7 @@ a00936a1fe6161350332b84826539b13 *R/visreg.R
 80f78fef93bac550b8933f0058af4228 *inst/tests/mixed-models.R
 962652950750efcf5153d34d8e5b9984 *man/visreg-faq.Rd
 9494214ca8649b142cdc8bff8e418a53 *man/visreg-package.Rd
-1131b90dc70c161d7361ac6df40618a6 *man/visreg.Rd
+ad50806283d0bf5fb7a1523e90470db3 *man/visreg.Rd
 4d0f8adb744c466a1c58664438b3a8a9 *man/visreg2d.Rd
 ec4d6a7ecf27a1d1f09c079ca45f24a4 *tests/missing-data.R
 bc76d09a613d81a56e2085357d726319 *tests/visreg-contrast.R
