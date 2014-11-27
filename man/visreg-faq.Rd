@@ -50,18 +50,27 @@
     \code{se.fit} option provided by the \code{predict} methods in the
     \code{nlme} and \code{lme4} packages, so you cannot obtain
     confidence bands for conditional plots.  Nevertheless, \code{visreg}
-    will produce plots of estimated coefficients and partial
-    residuals.
+    will produce plots of estimated coefficients and partial residuals.
 
-    Keep in mind, that depending on what sort of predictions (BLUPs) you
+    In addition, there may be certain nesting structures among the
+    covariates that \code{visreg} cannot be aware of; for example, if
+    you are trying to plot the effect of age for various individuals,
+    fixing sex at \code{sex=Male}, this may involve setting the sex of
+    female subjects to \code{Male} for the sake of the plot.  Whether
+    such a plot has any meaning, you will have to judge for yourself.
+    In general, contrast plots are more trustworthy than than
+    conditional plots, given the intricacies of setting up conditions in
+    a hierarchical model.
+    
+    Keep in mind that depending on what sort of predictions (BLUPs) you
     are interested in, you may need to manually control the inclusion
     of random effects in your predictions.  By default, visreg includes
     no random effects (i.e., \code{level=0} for \code{nlme} models and
-    \code{REform=NA} for \code{lme4} models).  If you are including a
+    \code{re.form=NA} for \code{lme4} models).  If you are including a
     random effect as a \code{by} variable in \code{visreg}, you most
     likely want to add those effects back in, and you will have to do so
     manually, by directly specifying the appropriate \code{level} or
-    \code{REform} argument to \code{predict} (see \code{?predict.nlme}
+    \code{re.form} argument to \code{predict} (see \code{?predict.nlme}
     or \code{?predict.merMod}).  Handling this appropriately is the
     user's responsibility; I cannot hope to automatically decide this
     for all possible mixed models that could be passed to visreg.
@@ -91,8 +100,8 @@
     package:
 
     \code{utils::data(Insurance, package="MASS")}\cr
-    \code{fit <- glm(Claims ~ District + Group + Age +}\cr
-    \code{  offset(log(Holders)), data = Insurance, family = poisson)}\cr
+    \code{fit <- glm(Claims ~ District + Group + Age +
+      offset(log(Holders)), data = Insurance, family = poisson)}\cr
     \code{visreg(fit, "Group", scale="response")}\cr
 
     This will provide the model's predictions for the expected number of
@@ -105,8 +114,25 @@
     Note also that to ensure proper functionality with all of visreg's
     options, the use of the \code{offset()} function, rather than the
     \code{offset=} argument, is recommended.
-  }
-}
+
+    \item \bold{Why doesn't visreg work with models I fit with package
+      XXX?}
+
+    \code{visreg()} relies on being able to call certain generic
+    functions to interface with the fitted model object that is passed
+    to it.  Specifically, if \code{fit} is the fit of a model that is
+    passed to \code{visreg}, the following have to work:
+
+    \code{model.frame(fit)}
+    \code{formula(fit)}
+
+    If they do not, there is nothing I can really do on the
+    \code{visreg} end to get it to work -- the author of the package
+    would need to add support for those generic functions to make it
+    more portable.  If the above lines of code \emph{do} work and
+    \code{visreg} still fails, please let me know -- perhaps there is a
+    bug somewhere that I can fix.
+}}
 \author{
   Patrick Breheny and Woodrow Burchett
   
