@@ -24,6 +24,10 @@ setupX <- function(fit, f, name, nn, cond, ...) {
     form <- parseFormula(formula(fit)[3])
     D <- model.frame(as.formula(paste("~",form)),df)
     X. <- predict(fit, newdata=as.list(D), type="lpmatrix")    
+  } else if (grepl("merMod", class(fit)[1])) {
+    form <- formula(fit, fixed.only = TRUE)
+    RHS <- formula(substitute(~R, list(R = form[[length(form)]])))
+    X. <- model.matrix(RHS, D)[-(1:nrow(f)), ind]
   } else {
     X. <- model.matrix(as.formula(paste("~",form)),D)[-(1:nrow(f)), ind]
   }
@@ -43,6 +47,8 @@ setupX <- function(fit, f, name, nn, cond, ...) {
   if (class(fit)[1]=="gam") {
     DD <- model.frame(as.formula(paste("~",form)),df)
     XX. <- predict(fit, newdata=as.list(DD), type="lpmatrix")
+  } else if (grepl("merMod", class(fit)[1])) {
+    XX. <- model.matrix(RHS, DD)[-(1:nrow(f)), ind]
   } else XX. <- model.matrix(as.formula(paste("~",form)),DD)[-(1:nrow(f)), ind]
   XX <- t(t(XX.[-1,])-XX.[1,])
   
