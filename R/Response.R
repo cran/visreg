@@ -1,22 +1,42 @@
 Response <- function(fit, x, trans, alpha, ...) {
   ## Calculate predictions, partial residuals
-  rr <- residuals(fit)
+  if ("randomForest" %in% class(fit)) {
+    if (fit$type=="regression") rr <- fit$y - fit$predicted
+    if (fit$type=="classification") {
+      P <- predict(fit, type="prob")
+      rr <- (fit$y==colnames(P)[2]) - P[,2]
+    }
+  } else {
+    rr <- residuals(fit)
+  }
+  if (class(fit)[1]!="mlm") rr <- rr[!is.na(rr)]
   nr <- if (is.matrix(rr)) nrow(rr) else length(rr)
   if (nrow(x$D) != nr) warning("Residuals do not match data; have you changed the original data set?  If so, visreg is probably not displaying the residuals for the data set that was actually used to fit the model.")
-  predict.args <- list(object=fit, newdata=x$D, level=0, re.form=NA)
+  predict.args <- list(object=fit, newdata=x$D)
+  if ("lme" %in% class(fit)) predict.args$level <- 0
+  if (inherits(fit, "merMod")) predict.args$re.form <- NA
   dots <- list(...)
   if (length(dots)) predict.args[names(dots)] <- dots
-  r <- suppressWarnings(do.call("predict", predict.args)) + rr
+  if ("randomForest" %in% class(fit) && fit$type=="classification") {
+    r <- P[,2]+rr
+  } else {
+    r <- suppressWarnings(do.call("predict", predict.args)) + rr
+  }
   predict.args$newdata <- x$DD
   if (class(fit)[1]=="mlm") {
     p <- list(fit = suppressWarnings(do.call("predict", predict.args)), se.fit = se.mlm(fit, newdata=x$DD))
+  } else if ("randomForest" %in% class(fit) && fit$type=="classification") {
+    predict.args$type <- "prob"
+    P <- suppressWarnings(do.call("predict", predict.args))
+    p <- list(fit=P[,2], se.fit=NA)
   } else {
-    predict.args$se <- TRUE
+    predict.args$se.fit <- TRUE ## note: se.fit required by some; add $se on case-by-case basis
     p <- suppressWarnings(do.call("predict", predict.args))    
   }
   
   ## Format output
   if (class(p)=="svystat") p <- list(fit=as.numeric(p), se.fit=sqrt(attr(p,"var")))
+  if ("rms" %in% class(fit)) p$fit <- p$linear.predictors
   if (is.numeric(p)) p <- list(fit=p, se.fit=NA)
   m <- ifelse(identical(class(fit),"lm"),qt(1-alpha/2,fit$df.residual),qnorm(1-alpha/2))
   upr <- p$fit + m*p$se.fit
