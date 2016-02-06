@@ -1,6 +1,6 @@
-6230c330db60578c6df77e1945843dab *DESCRIPTION
+76b49c96e97e2a5102ec4332ae495a2a *DESCRIPTION
 3984a42a3a16f927665513ee45b9638e *NAMESPACE
-8e9e742f3f01ab7a882b26b5d3fb7e32 *NEWS
+18d4691e1702331bdc919d3230b0142b *NEWS
 5ad4496bc44179cb89dbefabec787b17 *R/Response.R
 ed218e93575af83b21ce209ae602ad68 *R/Terms.R
 cf3d8fa904d6b8a4ee32c1daa8284711 *R/factorAxis.R
@@ -16,7 +16,7 @@ ac1e21eab7a32be67b1e779ed7677348 *R/plot.visreg.R
 4d83db73de8a6ad67d2a7a0886e2b0ed *R/se.mlm.R
 404c2238064afe412aaed7d46b0ff9b9 *R/setupCond.R
 44b01d76d0234a32927361d987418350 *R/setupD.R
-1c90081e1676d74161d7b085715ee4d9 *R/setupF.R
+2f5e50cffb349858b8ae4cbe09ffcb19 *R/setupF.R
 2c39861bd02a6b810e82fe7092f82911 *R/setupV.R
 b871bffe777ed9a43af47fcaf2f3a4db *R/setupV2.R
 1aa8cc476d71a988f56243336ca2ce05 *R/setupX.R
@@ -31,12 +31,12 @@ e286f6b9d3fe4fbfda847980f4bcfaaa *R/visregOverlayPlot.R
 49dedafa8e52057b7ed6f58b379a7d36 *R/visregPlot.R
 4090ad7f1ad19a0f085942894168cfb4 *R/visregPred.R
 75238040dd5a082aab7836c5ae8fd66d *R/visregResid.R
-72da9d5e0cbf99c71b7b83ca1d1cbf50 *README.md
+be9074d57a9f0269c62833702de4d829 *README.md
 86e732a66860831b72cf8bbb946ed87d *inst/faq/santiago1.R
 c152eca485f01b3c99ea607c6a55d878 *inst/faq/santiago2.R
-0adcdfcecf6ec1fa1352b5c60722ad97 *inst/tests/formulas.R
+793705b7a3a188182d6e385ff4f038d4 *inst/tests/formulas.R
 70c9ab0be0b8bbe70b461c3bcadb909a *inst/tests/mixed-models.R
-3eaf76b690605397fb63f19abb6ff3d1 *inst/tests/nonstandard-packages.R
+e9cb4d170a61c1e62d816a7536be8203 *inst/tests/nonstandard-packages.R
 e3da4ca58a4181dd33655698742a9e14 *inst/tests/subset.R
 42033eef445e5fa152d86e240dee824d *man/plot.visreg.Rd
 b2fc2db1dca5daefb7aaebcd3202a6cc *man/visreg-faq.Rd
