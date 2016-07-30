@@ -1,4 +1,4 @@
-visregLatticePlot <- function(v, partial, band, rug, ask, whitespace, strip.names, line.par, fill.par, points.par, ...) {
+visregLatticePlot <- function(v, partial, band, rug, whitespace, strip.names, line.par, fill.par, points.par, ...) {
   ## Setup
   x <- v$res[,v$meta$x]
   y <- v$res$visregRes
@@ -8,12 +8,12 @@ visregLatticePlot <- function(v, partial, band, rug, ask, whitespace, strip.name
   bb <- v$fit[,v$meta$by]
   lwr <- v$fit$visregLwr
   upr <- v$fit$visregUpr
-  
+
   if (is.factor(bb)) {
     b <- droplevels(b)
     bb <- droplevels(bb)
   }
-  
+
   xlim <- if (is.factor(xx)) c(0,1) else range(xx)
   if (partial) {
     ylim <- range(c(y, lwr, upr), na.rm=TRUE)
@@ -41,6 +41,8 @@ visregLatticePlot <- function(v, partial, band, rug, ask, whitespace, strip.name
   if (length(new.args)) plot.args[names(new.args)] <- new.args
   if (is.null(dev.list())) trellis.device()
   opar <- trellis.par.get()
+
+  # Plot
   line.args <- list(lwd=3, col="#008DFFFF")
   if (length(line.par)) line.args[names(line.par)] <- line.par
   trellis.par.set(plot.line=line.args)

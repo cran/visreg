@@ -1,4 +1,3 @@
-require(visreg)
 fit <- lm(cbind(Sepal.Length, Sepal.Width, Petal.Length) ~ Species + Petal.Width, iris)
 par(mfrow=c(3,1), mar=c(5, 5, 0.5, 0.5))
 visreg(fit, "Species")
@@ -7,6 +6,13 @@ visreg(fit, "Petal.Width")
 visreg(fit, "Petal.Width", type="contrast")
 visreg(fit, "Petal.Width", by="Species")
 visreg(fit, "Species", by="Petal.Width")
+
+# Works with no names?
+Y <- with(iris, cbind(Sepal.Length, Sepal.Width, Petal.Length))
+dimnames(Y) <- NULL
+fit <- lm(Y ~ Species + Petal.Width, iris)
+visreg:::se.mlm(fit)
+visreg(fit, "Species")
 
 ## Rug
 par(mfrow=c(3,1), mar=c(5, 5, 0.5, 0.5))

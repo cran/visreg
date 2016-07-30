@@ -2,8 +2,10 @@ visregPred <- function(fit, Data, se.fit=FALSE, ...) {
   predict.args <- list(object=fit, newdata=Data)
   if ("lme" %in% class(fit)) predict.args$level <- 0
   if (inherits(fit, "merMod")) predict.args$re.form <- NA
-  if ("rq" %in% class(fit)) predict.args$interval <- 'confidence'
-  if ("gbm" %in% class(fit)) predict.args$n.trees <- 5000
+  if ("rq" %in% class(fit)) predict.args$interval <- "confidence"
+  if ("svm" %in% class(fit)) predict.args$probability <- TRUE
+  if ("multinom" %in% class(fit)) predict.args$type <- "probs"
+  if ("gbm" %in% class(fit)) predict.args$n.trees <- length(fit$trees)
   dots <- list(...)
   if (length(dots)) predict.args[names(dots)] <- dots
 
@@ -27,5 +29,6 @@ visregPred <- function(fit, Data, se.fit=FALSE, ...) {
       p <- suppressWarnings(do.call("predict", predict.args))
     }
   }
+  if ("svm" %in% class(fit) && fit$type < 3) p <- attr(p, "probabilities")
   p
 }

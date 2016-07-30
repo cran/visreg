@@ -22,23 +22,21 @@ visregPlot <- function(v, partial, rug, band, whitespace, line.par, fill.par, po
   do.call("plot", plot.args)
 
   if (is.factor(xx)) {
-    ax <- TRUE
-    if (("xaxt" %in% names(new.args)) && new.args$xaxt=="n") ax <- FALSE
-    factorPlot(v, partial, band, rug, whitespace, line.par, fill.par, points.par, ax)
+    factorPlot(v, partial, band, rug, whitespace, line.par, fill.par, points.par, ...)
   } else {
     if (band) {
       fill.args <- list(x=c(xx,rev(xx)), y=c(lwr,rev(upr)), col="gray85", border=F)
       if (length(fill.par)) fill.args[names(fill.par)] <- fill.par
       do.call("polygon", fill.args)
     }
+    line.args <- list(x=xx, y=yy, lwd=3, lty=1, col="#008DFFFF")
+    if (length(line.par)) line.args[names(line.par)] <- line.par
+    do.call("lines", line.args)
     if (partial) {
       points.args <- list(x=x, y=y, pch=19, cex=0.4, col="gray50")
       if (length(points.par)) points.args[names(points.par)] <- points.par
       do.call("points", points.args)
     }
-    line.args <- list(x=xx, y=yy, lwd=3, lty=1, col="#008DFFFF")
-    if (length(line.par)) line.args[names(line.par)] <- line.par
-    do.call("lines", line.args)
     if (rug==1) rug(x, side=1)
     if (rug==2) {
       rug(x[!v$res$visregPos], side=1)
