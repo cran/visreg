@@ -23,6 +23,7 @@ visregPlot <- function(v, partial, rug, band, whitespace, line.par, fill.par, po
 
   if (is.factor(xx)) {
     factorPlot(v, partial, band, rug, whitespace, line.par, fill.par, points.par, ...)
+    if (!("xaxt" %in% names(new.args) && new.args$xaxt=="n")) factorAxis(x, whitespace, new.args)
   } else {
     if (band) {
       fill.args <- list(x=c(xx,rev(xx)), y=c(lwr,rev(upr)), col="gray85", border=F)
@@ -37,6 +38,7 @@ visregPlot <- function(v, partial, rug, band, whitespace, line.par, fill.par, po
       if (length(points.par)) points.args[names(points.par)] <- points.par
       do.call("points", points.args)
     }
+    do.call("lines", line.args)
     if (rug==1) rug(x, side=1)
     if (rug==2) {
       rug(x[!v$res$visregPos], side=1)

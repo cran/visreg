@@ -28,6 +28,7 @@ factorPlot <- function(v, partial, band, rug, w, line.par, fill.par, points.par,
       if (length(points.par)) points.args[names(points.par)] <- points.par
       do.call("points", points.args)
     }
+    do.call("lines", line.args)
     if (rug==1) rug(rx,col=line.args$col)
     if (rug==2) {
       ind1 <- ind & !v$res$visregPos
@@ -37,11 +38,5 @@ factorPlot <- function(v, partial, band, rug, w, line.par, fill.par, points.par,
       rug(rx1, col=line.args$col)
       rug(rx2, side=3, col=line.args$col)
     }
-  }
-  new.args <- list(...)
-  if (!(("xaxt" %in% names(new.args)) && new.args$xaxt=="n")) {
-    axis.args <- list(side=1, at=(0:(K-1))/len+(1-w)/(2*len), labels=levels(x))
-    if (length(new.args)) axis.args[names(new.args)] <- new.args
-    do.call("axis", axis.args)
   }
 }
