@@ -1,7 +1,25 @@
 setupX <- function(fit, f, name, nn, cond, ...) {
   ## Set up n x p matrix for (conditional) partial residuals
   x <- f[,name]
-  x <- if (is.factor(x)) factor(c(1,as.integer(x)),labels=levels(x)) else c(mean(x),x)
+  if (is.factor(x)) {
+    xref <- 1
+    if (name %in% names(cond)) {
+      if (cond[[name]] %in% levels(x)) {
+        xref <- which(levels(x) == cond[[name]])
+      } else if (cond[[name]] %in% 1:length(levels(x))) {
+        xref <- cond[[name]]
+      } else {
+        warning(paste0("You have specified a value for ", name, " that is not one of its levels.\n  Using reference level instead."))
+      }
+    }
+  } else {
+    if (name %in% names(cond)) {
+      xref <- cond[[name]]
+    } else {
+      xref <- mean(x)
+    }
+  }
+  x <- if (is.factor(x)) factor(c(xref, as.integer(x)), labels=levels(x)) else c(xref, x)
   xdf <- data.frame(x)
   names(xdf) <- name
   df <- fillFrame(f, xdf, cond)
@@ -39,9 +57,9 @@ setupX <- function(fit, f, name, nn, cond, ...) {
   ## Set up data frame with nn rows for prediction
   dots <- list(...)
   xx <- if (is.factor(x)) {
-    factor(c(1,1:length(levels(x))),labels=levels(x))
+    factor(c(xref, 1:length(levels(x))),labels=levels(x))
   } else {
-    if ("xlim" %in% names(dots)) c(mean(x), seq(dots$xlim[1], dots$xlim[2], length=nn)) else c(mean(x), seq(min(x),max(x),length=nn))
+    if ("xlim" %in% names(dots)) c(xref, seq(dots$xlim[1], dots$xlim[2], length=nn)) else c(xref, seq(min(x),max(x),length=nn))
   }
   xxdf <- data.frame(xx)
   names(xxdf) <- name

@@ -32,7 +32,7 @@ setupF <- function(fit, xvar, call.env) {
     }
     names(av) <- c(ynames, utils::head(names(av)[-1], n=ncol(av) - length(ynames)))
   }
-  f <- as.data.frame(as.list(av))
+  f <- as.data.frame(av)
 
   if (class(CALL$random)=="call") {
     rf <- as.data.frame(as.list(get_all_vars(CALL$random, Data)))
@@ -42,9 +42,9 @@ setupF <- function(fit, xvar, call.env) {
   if ("subset" %in% names(CALL)) {
     s <- CALL$subset
     subset <- eval(substitute(s), Data, env)
-    f <- f[which(subset==TRUE),]
+    f <- f[which(subset==TRUE),,drop=FALSE]
   }
-  suppressWarnings(f <- f[!apply(is.na(f), 1, any),])
+  suppressWarnings(f <- f[!apply(is.na(f), 1, any),,drop=FALSE])
 
   ## Handle some variable type issues
   needsUpdate <- FALSE
@@ -57,7 +57,10 @@ setupF <- function(fit, xvar, call.env) {
     for (j in 1:ncol(f)) if (class(f[,j])[1]=="logical") f[,j] <- as.numeric(f[,j])
   }
   inModel <- sapply(names(f), grepl, x=as.character(formula(fit)[3]), fixed=TRUE)
-  if (missing(xvar)) xvar <- names(f)[which(inModel)]
+  if (missing(xvar)) {
+    const <- sapply(f, function(x) all(x==x[1]))
+    xvar <- names(f)[!const & inModel]
+  }
   for (i in 1:length(xvar)){if (!is.element(xvar[i],names(f))) stop(paste(xvar[i],"not in model"))}
 
   attr(f, "needsUpdate") <- needsUpdate

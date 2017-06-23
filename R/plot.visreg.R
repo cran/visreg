@@ -1,6 +1,6 @@
-plot.visreg <- function(x, overlay=FALSE, print.cond=FALSE, whitespace=0.2, partial=identical(x$meta$trans, I), band=TRUE, rug=!partial,
-                        strip.names=is.numeric(x$fit[,x$meta$by]), legend=TRUE, line.par=NULL, fill.par=NULL,
-                        points.par=NULL, gg=FALSE, ...) {
+plot.visreg <- function(x, overlay=FALSE, print.cond=FALSE, whitespace=0.2, partial=identical(x$meta$trans, I), band=TRUE,
+                        rug=ifelse(partial, 0, 2), strip.names=is.numeric(x$fit[,x$meta$by]), legend=TRUE, line.par=NULL,
+                        fill.par=NULL, points.par=NULL, gg=FALSE, ...) {
   warn <- FALSE
   if (missing(print.cond)) {
     if (!("by" %in% names(x$meta)) & x$meta$hasInteraction) print.cond <- warn <- TRUE
@@ -14,7 +14,7 @@ plot.visreg <- function(x, overlay=FALSE, print.cond=FALSE, whitespace=0.2, part
     } else {
       p <- ggContPlot(x, partial, band, rug, whitespace, strip.names, line.par, fill.par, points.par, ...)
     }
-    return(invisible(p))
+    return(p)
   } else {
     if ("by" %in% names(x$meta)) {
       if (overlay) {
