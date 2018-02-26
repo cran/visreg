@@ -26,6 +26,5 @@ visregFactorPanel <- function(x, y, w, subscripts, lframe, lresids, partial, ban
       panel.rug(rx2, regular=FALSE)
     }
   }
-
   panel.xyplot(0,0,subscripts=subscripts,...)
 }

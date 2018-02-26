@@ -1,19 +1,24 @@
-## ------------------------------------------------------------------------
-fit <- lm(Ozone ~ Solar.R + Wind + Temp,data=airquality)
+## ---- include=FALSE------------------------------------------------------
+library(visreg)
+knitr::opts_knit$set(aliases=c(h = 'fig.height', w = 'fig.width'))
 
-## ----opts.label='fig'----------------------------------------------------
+## ------------------------------------------------------------------------
+fit <- lm(Ozone ~ Solar.R + Wind + Temp, data=airquality)
+
+## ---- h=5, w=5-----------------------------------------------------------
 visreg(fit, "Wind")
 
 ## ------------------------------------------------------------------------
 airquality$Heat <- cut(airquality$Temp, 3, labels=c("Cool","Mild","Hot"))
-fit.in1 <- lm(Ozone~ Solar.R + Wind*Heat,data=airquality)
+fit <- lm(Ozone~ Solar.R + Wind*Heat, data=airquality)
 
-## ----fig.height=4, fig.width=8, out.width='\\linewidth', fig.align='center'----
-visreg(fit.in1, "Wind", by="Heat")
+## ---- h=4, w=9, out.width='100%'-----------------------------------------
+visreg(fit, "Wind", by="Heat")
 
-## ----opts.label='fig'----------------------------------------------------
-visreg(fit.in1, "Wind", by="Heat", overlay=TRUE)
+## ---- h=5, w=5-----------------------------------------------------------
+visreg(fit, "Wind", by="Heat", overlay=TRUE)
 
-## ----opts.label='fig'----------------------------------------------------
-visreg2d(fit.in1, "Wind", "Heat")
+## ---- h=5, w=6-----------------------------------------------------------
+fit <- lm(Ozone~ poly(Wind, 2)*poly(Temp, 2), data=airquality)
+visreg2d(fit, "Wind", "Temp")
 

@@ -7,12 +7,18 @@ plot.visreg <- function(x, overlay=FALSE, print.cond=FALSE, whitespace=0.2, part
   }
   if (print.cond) printCond(x, warn)
 
+  if (all(is.na(x$res$visregRes))) {
+    partial <- FALSE
+    rug <- FALSE
+    warning(paste0("The generic function residuals() is not set up for this type of model object.  To plot partial residuals, you will need to define your own residuals.", x$meta$class[1], " function."))
+  }
+
   if (gg) {
     if (!requireNamespace("ggplot2")) stop("You must first install the ggplot2 package: install.packages('ggplot2')")
     if (is.factor(x$fit[,x$meta$x])) {
-      p <- ggFactorPlot(x, partial, band, rug, whitespace, strip.names, line.par, fill.par, points.par, ...)
+      p <- ggFactorPlot(x, partial, band, rug, whitespace, strip.names, overlay, line.par, fill.par, points.par, ...)
     } else {
-      p <- ggContPlot(x, partial, band, rug, whitespace, strip.names, line.par, fill.par, points.par, ...)
+      p <- ggContPlot(x, partial, band, rug, whitespace, strip.names, overlay, line.par, fill.par, points.par, ...)
     }
     return(p)
   } else {
