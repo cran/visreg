@@ -1,26 +1,36 @@
 setupF <- function(fit, xvar, call.env) {
   if (isS4(fit)) {
     CALL <- fit@call
-    ENV <- NULL
+    FRAME <- try(fit@frame, silent=TRUE)
+    DATA <- try(fit@data, silent=TRUE)
+    if (class(DATA) != 'try-error') {
+      Data <- DATA
+    } else if (class(FRAME) != 'try-error') {
+      Data <- FRAME
+    } else {
+      stop("visreg cannot find the data set used to fit your model; try attaching it to the fit with fit@data <- myData")
+    }
   } else {
     CALL <- fit$call
     ENV <- environment(fit$terms)
-  }
-  if ("data" %in% names(fit) && is.data.frame(fit$data)) {
-    Data <- fit$data
-    env <- NULL
-  } else if (is.null(CALL$data)) {
-    env <- NULL
-    Data <- NULL
-  } else if (exists(as.character(CALL$data), call.env)) {
-    env <- call.env
-    Data <- eval(CALL$data, envir=env)
-  } else if (exists(as.character(CALL$data), ENV)) {
-    Data <- eval(CALL$data, envir=ENV)
-  } else {
-    stop("visreg cannot find the data set used to fit your model; try attaching it to the fit with fit$data <- myData")
+    if ("data" %in% names(fit) && is.data.frame(fit$data)) {
+      Data <- fit$data
+      env <- NULL
+    } else if (isS4(fit)) {
+    } else if (is.null(CALL$data)) {
+      env <- NULL
+      Data <- NULL
+    } else if (exists(as.character(CALL$data), call.env)) {
+      env <- call.env
+      Data <- eval(CALL$data, envir=env)
+    } else if (exists(as.character(CALL$data), ENV)) {
+      Data <- eval(CALL$data, envir=ENV)
+    } else {
+      stop("visreg cannot find the data set used to fit your model; try attaching it to the fit with fit$data <- myData")
+    }
   }
   form <- formula(fit)
+  if (!is.null(Data)) names(Data) <- gsub('offset\\((.*)\\)', '\\1', names(Data))
   av <- get_all_vars(form, Data)    # https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=14905
   #av <- av[,!is.na(names(av))]     # Breaks mlm if dimnames(Y) not set
   if ("mlm" %in% class(fit) && is.null(colnames(coef(fit)))) {
@@ -40,7 +50,7 @@ setupF <- function(fit, xvar, call.env) {
     rf <- rf[,setdiff(names(rf), names(f)),drop=FALSE]
     f <- cbind(f, rf)
   }
-  if ("subset" %in% names(CALL)) {
+  if ("subset" %in% names(CALL) & !('averaging' %in% class(fit))) {
     s <- CALL$subset
     subset <- eval(substitute(s), Data, env)
     f <- f[which(subset==TRUE),,drop=FALSE]
@@ -57,12 +67,14 @@ setupF <- function(fit, xvar, call.env) {
     needsUpdate <- TRUE
     for (j in 1:ncol(f)) if (class(f[,j])[1]=="logical") f[,j] <- as.numeric(f[,j])
   }
-  inModel <- sapply(names(f), grepl, x=as.character(formula(fit)[3]), fixed=TRUE)
   if (missing(xvar)) {
+    all_x <- strsplit(parseFormula(formula(fit)[3]), ' + ', fixed=TRUE)[[1]]
+    inModel <- sapply(names(f), function(x) x %in% all_x)
     const <- sapply(f, function(x) all(x==x[1]))
     xvar <- names(f)[!const & inModel]
   }
-  for (i in 1:length(xvar)){if (!is.element(xvar[i],names(f))) stop(paste(xvar[i],"not in model"))}
+  if (length(xvar)==0) stop("The model has no predictors; visreg has nothing to plot.", call.=FALSE)
+  for (i in 1:length(xvar)){if (!is.element(xvar[i],names(f))) stop(paste(xvar[i], "not in model"))}
 
   attr(f, "needsUpdate") <- needsUpdate
   attr(f, "xvar") <- xvar
