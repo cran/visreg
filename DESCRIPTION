@@ -1,7 +1,7 @@
 Package: visreg
 Title: Visualization of Regression Models
-Version: 2.5-1
-Date: 2019-06-26
+Version: 2.6-0
+Date: 2019-11-27
 Author: Patrick Breheny, Woodrow Burchett
 Maintainer: Patrick Breheny <patrick-breheny@uiowa.edu>
 Imports: lattice
@@ -12,6 +12,6 @@ Description: Provides a convenient interface for constructing plots to visualize
 License: GPL-3
 URL: http://pbreheny.github.io/visreg
 NeedsCompilation: no
-Packaged: 2019-06-27 15:16:51 UTC; pbreheny
+Packaged: 2019-11-27 21:06:01 UTC; pbreheny
 Repository: CRAN
-Date/Publication: 2019-06-27 15:30:04 UTC
+Date/Publication: 2019-11-27 21:30:02 UTC
