@@ -38,7 +38,7 @@ plot.visreg2d <- function(x, plot.type=c("image","persp","rgl", "gg"), xlab, yla
     yy <- yAxis$x
     my <- yAxis$m
     ly <- yAxis$l
-    zz <- zz[,yAxis$ind]
+    zz <- zz[, yAxis$ind]
   } else {
     yy <- x$y
   }
@@ -48,7 +48,7 @@ plot.visreg2d <- function(x, plot.type=c("image","persp","rgl", "gg"), xlab, yla
   if (plot.type=="image") {
     color.palette=colorRampPalette(color, space="Lab")
     plot.args <- list(x=xx, y=yy, z=zz, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, color.palette=color.palette, main=zlab)
-    plot.args$plot.axes <- quote({axis(1,at=mx,labels=lx);axis(2,at=my,labels=ly)})
+    plot.args$plot.axes <- quote({axis(1, at=mx, labels=lx); axis(2, at=my, labels=ly)})
     new.args <- list(...)
     if (length(new.args)) plot.args[names(new.args)] <- new.args
     do.call("filled.contour", plot.args)
@@ -60,14 +60,14 @@ plot.visreg2d <- function(x, plot.type=c("image","persp","rgl", "gg"), xlab, yla
     p <- do.call("persp", plot.args)
     return(p)
   } else if (plot.type=="rgl") {
-    if (!requireNamespace("rgl")) stop("You must first install the rgl package: install.packages('rgl')")
+    if (!requireNamespace("rgl")) stop("You must first install the rgl package: install.packages('rgl')", call.=FALSE)
     plot.args <- list(x=xx, y=yy, z=zz, xlab=xlab, ylab=ylab, zlab=zlab, color=color)
     new.args <- list(...)
     if (length(new.args)) plot.args[names(new.args)] <- new.args
     #if (i >= 2) rgl::open3d()
     do.call(rgl::persp3d, plot.args)
   } else if (plot.type=="gg") {
-    if (!requireNamespace("ggplot2")) stop("You must first install the ggplot2 package: install.packages('ggplot2')")
+    if (!requireNamespace("ggplot2")) stop("You must first install the ggplot2 package: install.packages('ggplot2')", call.=FALSE)
     df <- data.frame(x = xx[row(zz)], y = yy[col(zz)], z = c(zz))
     p <- ggplot2::ggplot(df, ggplot2::aes_string('x', 'y')) +
       ggplot2::geom_raster(ggplot2::aes_string(fill='z')) +

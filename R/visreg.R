@@ -9,15 +9,16 @@ visreg <- function(fit, xvar, by, breaks=3, type=c("conditional", "contrast"), d
   type <- match.arg(type)
   scale <- match.arg(scale)
   if (scale=="response") {
-    if (class(fit)[1]=="lrm") {
+    if (inherits(fit, "lrm")) {
       trans <- binomial()$linkinv
-    } else if (class(fit)[1] == "betareg") {
+    } else if (inherits(fit, "betareg")) {
       trans <- fit$link$mean$linkinv
     } else {
       trans <- family(fit)$linkinv
     }
   }
-
+  if (!identical(trans, I) & type=="contrast") warning("You are attempting to transform a contrast.  The resulting plot is not guaranteed to be meaningful.", call.=FALSE)
+  
   Data <- setupF(fit, xvar, parent.frame(), data)
   xvar <- attr(Data, "xvar")
   if (attr(Data, "needsUpdate")) {
@@ -37,8 +38,8 @@ visreg <- function(fit, xvar, by, breaks=3, type=c("conditional", "contrast"), d
   # Plot/return
   if (plot) {
     p <- plot(v, ...)
-    if (!is.null(p) && 'gg' %in% class(p)) return(p)
-    if (!is.null(p) && class(p) == 'list' && 'gg' %in% class(p[[1]])) return(p)
+    if (!is.null(p) && inherits(p, 'gg')) return(p)
+    if (!is.null(p) && inherits(p, 'list') && inherits(p[[1]], 'gg')) return(p)
   }
   invisible(v)
 }
