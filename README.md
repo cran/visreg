@@ -1,7 +1,8 @@
-[![version](http://www.r-pkg.org/badges/version/visreg)](https://cran.r-project.org/package=visreg)
+[![GitHub version](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pbreheny/visreg/master/.version.json&style=flat&logo=github)](https://github.com/pbreheny/visreg)
+[![CRAN version](https://img.shields.io/cran/v/visreg?logo=R)](https://cran.r-project.org/package=visreg)
 [![downloads](http://cranlogs.r-pkg.org/badges/visreg)](https://cran.r-project.org/package=visreg)
+[![Travis build status](https://api.travis-ci.org/pbreheny/visreg.svg?branch=master)](https://travis-ci.org/pbreheny/visreg)
 [![codecov.io](https://codecov.io/github/pbreheny/visreg/coverage.svg?branch=master)](https://codecov.io/github/pbreheny/visreg?branch=master)
-[![Travis build status](https://travis-ci.org/pbreheny/breheny.svg?branch=master)](https://travis-ci.org/pbreheny/breheny)
 
 # Visualization of Regression Models
 
@@ -44,7 +45,16 @@ The website focuses more on syntax, options, and user interface, while the paper
 
 If you have a question or feature request, please [submit an issue](https://github.com/pbreheny/visreg/issues).
 
-To install:
+## Installation
 
-* the latest released version: `install.packages("visreg")`
-* the latest version (requires `devtools`): `install_github("pbreheny/visreg")`
+To install the latest release version from CRAN:
+
+```r
+install.packages("visreg")
+```
+
+To install the latest development version from GitHub:
+
+```r
+remotes::install_github("pbreheny/visreg")
+```

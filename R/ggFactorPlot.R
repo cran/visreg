@@ -1,4 +1,4 @@
-ggFactorPlot <- function(v, partial, band, rug, w, strip.names, overlay, line.par, fill.par, points.par, ...) {
+ggFactorPlot <- function(v, partial, band, rug, w, strip.names, overlay, top, line.par, fill.par, points.par, ...) {
   if ("by" %in% names(v$meta)) {
     if (is.factor(v$fit[, v$meta$by])) {
       lev <- levels(v$fit[, v$meta$by])
@@ -78,22 +78,6 @@ ggFactorPlot <- function(v, partial, band, rug, w, strip.names, overlay, line.pa
     }
   }
 
-  # Plot lines
-  for(k in 1:K) {
-    x1 <- (k-1)/len
-    x2 <- (k-1)/len + (1-w)/len
-    xx <- c(x1, x2)
-
-    lineData <- data.frame(visregGGX = rep(xx, J),
-                           visregGGY = rep(v$fit$visregFit[(1:J-1)*K + k], each=2))
-    if ("by" %in% names(v$meta)) {
-      lineData$visregGGZ <- rep(b, each=2)
-      names(lineData)[3] <- v$meta$by
-    }
-    line.args$data <- lineData
-    p <- p + do.call("geom_line", line.args, envir=asNamespace("ggplot2"))
-  }
-
   # Plot points
   for (j in 1:J) {
     for (k in 1:K) {
@@ -124,26 +108,69 @@ ggFactorPlot <- function(v, partial, band, rug, w, strip.names, overlay, line.pa
     }
   }
   if ("by" %in% names(v$meta)) names(pointData)[3] <- v$meta$by
-  if (partial) {
+  if (!partial) {
+    p <- ggfp_lines(p, K, len, w, xx, J, v, b, line.args)
+  } else {
     point.args$data <- pointData
-    p <- p + do.call("geom_point", point.args, envir=asNamespace("ggplot2"))
+    if (top == 'line') {
+      p <- p + do.call("geom_point", point.args, envir=asNamespace("ggplot2"))
+      p <- ggfp_lines(p, K, len, w, xx, J, v, b, line.args)
+    } else {
+      p <- ggfp_lines(p, K, len, w, xx, J, v, b, line.args)
+      p <- p + do.call("geom_point", point.args, envir=asNamespace("ggplot2"))
+    }
   }
-  
+
   # Rug
-  if (rug==1) p <- p + ggplot2::geom_rug(data=pointData, mapping=ggplot2::aes_string(color=v$meta$by), sides='b')
-  if (rug==2) {
-    p <- p + ggplot2::geom_rug(data=pointData[pointData$visregGGP,], mapping=ggplot2::aes_string(color=v$meta$by), sides='t')
-    p <- p + ggplot2::geom_rug(data=pointData[!pointData$visregGGP,], mapping=ggplot2::aes_string(color=v$meta$by), sides='b')
+  if (rug==1) {
+    rug.args <- point.args
+    rug.args$sides <- 'b'
+    p <- p + do.call("geom_rug", point.args, envir=asNamespace("ggplot2"))
   }
-  
+  if (rug==2) {
+    top.args <- bot.args <- point.args
+    top.args$sides <- 't'
+    bot.args$sides <- 'b'
+    top.args$data <- pointData[v$res$visregPos,]
+    bot.args$data <- pointData[!v$res$visregPos,]
+    p <- p + do.call("geom_rug", top.args, envir=asNamespace("ggplot2"))
+    p <- p + do.call("geom_rug", bot.args, envir=asNamespace("ggplot2"))
+  }
+
   # Facet
   if (facet) {
     form <- as.formula(paste("~", v$meta$by))
-    if (strip.names==TRUE) {
+    if (identical(strip.names, TRUE)) {
       p <- p + ggplot2::facet_grid(form, labeller=ggplot2::label_both)
-    } else {
+    } else if (identical(strip.names, FALSE)) {
       p <- p + ggplot2::facet_grid(form)
+    } else if (is.character(strip.names) & length(strip.names) == J) {
+      names(strip.names) <- levels(b)
+      args <- list(strip.names)
+      names(args) <- v$meta$by
+      lbl <- do.call(ggplot2::labeller, args)
+      p <- p + ggplot2::facet_grid(form, labeller=lbl)
+    } else {
+      stop('strip.names must either be logical or a character vector with length equal to the number of facets', call.=FALSE)
     }
+  }
+  p
+}
+
+ggfp_lines <- function(p, K, len, w, xx, J, v, b, line.args) {
+  for(k in 1:K) {
+    x1 <- (k-1)/len
+    x2 <- (k-1)/len + (1-w)/len
+    xx <- c(x1, x2)
+    
+    lineData <- data.frame(visregGGX = rep(xx, J),
+                           visregGGY = rep(v$fit$visregFit[(1:J-1)*K + k], each=2))
+    if ("by" %in% names(v$meta)) {
+      lineData$visregGGZ <- rep(b, each=2)
+      names(lineData)[3] <- v$meta$by
+    }
+    line.args$data <- lineData
+    p <- p + do.call("geom_line", line.args, envir=asNamespace("ggplot2"))
   }
   p
 }
