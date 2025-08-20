@@ -1,4 +1,4 @@
-getXY <- function(fit, f, name, nn, cond, type, trans, xtrans, alpha, jitter, ...) {
+getXY <- function(fit, f, name, nn, cond, type, trans, alpha, jitter, ...) {
   if (type=="conditional") {
     x <- setupD(fit, f, name, nn, cond, ...)
     y <- Response(fit, x, trans, alpha, ...)
@@ -9,9 +9,10 @@ getXY <- function(fit, f, name, nn, cond, type, trans, xtrans, alpha, jitter, ..
   }
   
   if (jitter && is.numeric(x$x)) x$x <- jitter(x$x)
-  if (!missing(xtrans)) {
-    x$xx <- xtrans(x$xx)
-    x$x <- xtrans(x$x)
+  dots <- list(...)
+  if ('xtrans' %in% names(dots)) {
+    x$xx <- dots$xtrans(x$xx)
+    x$x <- dots$xtrans(x$x)
   }
   list(x=x, y=y)
 }

@@ -1,12 +1,21 @@
-visregPred <- function(fit, Data, se.fit=FALSE, ...) {
-  predict.args <- list(object=fit, newdata=Data)
+visregPred <- function(fit, Data, se.fit = FALSE, ...) {
+  predict.args <- list(object = fit, newdata = Data)
   if (inherits(fit, "lme")) predict.args$level <- 0
-  if (inherits(fit, "merMod")) predict.args$re.form <- NA
+  if (inherits(fit, "merMod")) {
+    if ("re.form" %in% names(list(...))) {
+      se.fit <- FALSE
+    } else {
+      predict.args$re.form <- NA
+    }
+  }
   if (inherits(fit, "rq")) predict.args$interval <- "confidence"
   if (inherits(fit, "svm")) predict.args$probability <- TRUE
   if (inherits(fit, "multinom") | inherits(fit, "polr")) predict.args$type <- "probs"
   if (inherits(fit, "gbm")) predict.args$n.trees <- length(fit$trees)
-  if (inherits(fit, "betareg")) predict.args$type <- "link"
+  if (inherits(fit, "betareg")) {
+    predict.args$type <- c("link", "variance")
+    se.fit <- FALSE
+  }
   dots <- list(...)
   if (length(dots)) predict.args[names(dots)] <- dots
 

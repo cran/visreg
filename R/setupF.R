@@ -2,7 +2,10 @@ setupF <- function(fit, xvar, call.env, data) {
   CALL <- if (isS4(fit)) fit@call else fit$call
   if (!is.null(data)) {
     Data <- data
-  } else if (!is.null(CALL) && ('data' %in% names(CALL)) && exists(as.character(CALL$data), call.env)) {
+  } else if (!is.null(CALL) &&
+             ('data' %in% names(CALL)) &&
+             (exists(tail(as.character(CALL$data), 1), call.env) ||
+              head(as.character(CALL$data), 1) == '::')) {
     env <- call.env
     Data <- eval(CALL$data, envir=env)
   } else if (isS4(fit)) {
@@ -23,9 +26,6 @@ setupF <- function(fit, xvar, call.env, data) {
     } else if (is.null(CALL$data)) {
       env <- NULL
       Data <- NULL
-    } else if (exists(as.character(CALL$data), call.env)) {
-      env <- call.env
-      Data <- eval(CALL$data, envir=env)
     } else if (exists(as.character(CALL$data), ENV)) {
       env <- ENV
       Data <- eval(CALL$data, envir=ENV)
@@ -33,7 +33,12 @@ setupF <- function(fit, xvar, call.env, data) {
       stop("visreg cannot find the data set used to fit your model; supply it using the 'data=' option", call.=FALSE)
     }
   }
-  form <- formula(fit)
+  
+  if (inherits(fit, 'glmmTMB')) {
+    form <- fit$modelInfo$allForm$combForm
+  } else {
+    form <- formula(fit)  
+  }
   if (!is.null(Data)) names(Data) <- gsub('offset\\((.*)\\)', '\\1', names(Data))
   if (inherits(fit, 'mlm') && fit$terms[[2L]] != 'call') {
     ff <- form
@@ -47,7 +52,7 @@ setupF <- function(fit, xvar, call.env, data) {
   if (inherits(CALL$random, "call")) {
     rf <- as.data.frame(as.list(get_all_vars(CALL$random, Data)))
     rf <- rf[, setdiff(names(rf), names(f)), drop=FALSE]
-    f <- cbind(f, rf)
+    if (nrow(rf) > 0) f <- cbind(f, rf)
   }
   if ("subset" %in% names(CALL) & !(inherits(fit, 'averaging'))) {
     s <- CALL$subset

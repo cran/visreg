@@ -1,5 +1,5 @@
 setupX <- function(fit, f, name, nn, cond, ...) {
-  ## Set up n x p matrix for (conditional) partial residuals
+  # Set up n x p matrix for (conditional) partial residuals
   x <- f[, name]
   if (is.factor(x)) {
     xref <- 1
@@ -24,20 +24,14 @@ setupX <- function(fit, f, name, nn, cond, ...) {
   names(xdf) <- name
   df <- fillFrame(f, xdf, cond)
   D <- rbind(f[, names(df)], df)
-  form <- formula(fit)[3]
-
-  if (inherits(fit, "lme")) {
-    b <- nlme::fixed.effects(fit)
-  } else if (inherits(fit, "merMod")) {
-    b <- fit@beta
-  } else {
-    b <- coef(fit)
-  }
+  b <- visreg_coef(fit)
 
   if (inherits(fit, "mlm")) {
     ind <- apply(is.finite(b), 1, all)
     if (!identical(ind, apply(is.finite(b), 1, any))) stop("Inconsistent NA/NaN coefficients across outcomes", call.=FALSE)
-  } else ind <- is.finite(b)
+  } else {
+    ind <- is.finite(b)
+  }
   if (inherits(fit, "gam")) {
     form <- parseFormula(formula(fit)[3])
     D <- model.frame(as.formula(paste("~", form)), df)
@@ -49,17 +43,31 @@ setupX <- function(fit, f, name, nn, cond, ...) {
   } else if (inherits(fit, "glmmadmb")) {
     form <- as.formula(paste("~", as.character(fit$fixed[3])))
     X. <- model.matrix(form, D)[-(1:nrow(f)), ind]
+  } else if (inherits(fit, "betareg")) {
+    form <- formula(fit)[3]
+    ind <- ind[-length(ind)]
+    X. <- model.matrix(as.formula(paste("~", form)), D)[-(1:nrow(f)), ind]
+  } else if (inherits(fit, 'glmmTMB')) {
+    form <- lme4::nobars(formula(fit))[3]
+    X. <- model.matrix(as.formula(paste("~", form)), D)[-(1:nrow(f)), ind]
   } else {
+    form <- formula(fit)[3]
     X. <- model.matrix(as.formula(paste("~", form)), D)[-(1:nrow(f)), ind]
   }
-  X <- t(t(X.[-1,])-X.[1,])
+  X <- t(t(X.[-1,]) - X.[1,])
 
   ## Set up data frame with nn rows for prediction
   dots <- list(...)
   if (is.factor(x)) {
     xx <- factor(c(xref, 1:length(levels(x))), labels=levels(x))
   } else {
-    xx <- c(xref, seq(min(x), max(x), length=nn))
+    if ('xtrans' %in% names(dots)) {
+      xx <- c(xref, seq(min(x), max(x), length=nn))
+      fi <- approxfun(dots$xtrans(x), x)
+      xx <- seq(dots$xtrans(min(x)), dots$xtrans(max(x)), len=nn) |> fi()
+    } else {
+      xx <- c(xref, seq(min(x), max(x), length=nn))
+    }
   }
   xxdf <- data.frame(xx)
   names(xxdf) <- name
