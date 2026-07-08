@@ -1,4 +1,4 @@
-#' @keywords internal 
+#' @keywords internal
 #' @aliases visreg-package NULL
 #' @references
 #' Breheny P and Burchett W. (2017) Visualization of regression models using
@@ -12,4 +12,5 @@
 #' @import grDevices
 #' @import stats
 #' @import utils
+#' @importFrom rlang .data
 NULL

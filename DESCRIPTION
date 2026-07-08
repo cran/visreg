@@ -1,6 +1,6 @@
 Package: visreg
 Title: Visualization of Regression Models
-Version: 2.8.0
+Version: 2.8.1
 Authors@R: c(
   person("Patrick", "Breheny", role=c("aut","cre"),
          email="patrick-breheny@uiowa.edu",
@@ -15,18 +15,18 @@ URL: https://pbreheny.github.io/visreg/,
         https://github.com/pbreheny/visreg
 BugReports: https://github.com/pbreheny/visreg/issues
 Depends: R (>= 4.1)
-Imports: lattice
-Suggests: ggplot2, glmmTMB, knitr, lme4, MASS, Matrix, rgl, rmarkdown,
-        survival, tinytest
+Imports: lattice, rlang, ggplot2
+Suggests: glmmTMB, knitr, lme4, MASS, Matrix, rgl, rmarkdown, survival,
+        tinytest
 Enhances: nlme
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2025-08-05 03:10:23 UTC; pbreheny
+Packaged: 2026-07-08 15:58:36 UTC; pbreheny
 Author: Patrick Breheny [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-0650-1119>),
   Woodrow Burchett [ctb]
 Maintainer: Patrick Breheny <patrick-breheny@uiowa.edu>
 Repository: CRAN
-Date/Publication: 2025-08-20 15:00:02 UTC
+Date/Publication: 2026-07-08 16:30:02 UTC
