@@ -1,10 +1,10 @@
 <!-- badges: start -->
 
-[![GitHub version](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pbreheny/visreg/master/.version.json&style=flat&logo=github)](https://github.com/pbreheny/visreg)
+[![GitHub version](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pbreheny/visreg/main/.version.json&style=flat&logo=github)](https://github.com/pbreheny/visreg)
 [![CRAN version](https://img.shields.io/cran/v/visreg?logo=R)](https://cran.r-project.org/package=visreg)
 [![downloads](https://cranlogs.r-pkg.org/badges/visreg)](https://cran.r-project.org/package=visreg)
 [![R-CMD-check](https://github.com/pbreheny/visreg/workflows/R-CMD-check/badge.svg)](https://github.com/pbreheny/visreg/actions)
-[![codecov.io](https://codecov.io/github/pbreheny/visreg/coverage.svg?branch=master)](https://app.codecov.io/gh/pbreheny/visreg)
+[![codecov.io](https://codecov.io/github/pbreheny/visreg/coverage.svg?branch=main)](https://app.codecov.io/gh/pbreheny/visreg)
 <!-- badges: end -->
 
 # visreg: Visualization of Regression Models
@@ -25,6 +25,12 @@ To install the latest development version from GitHub:
 remotes::install_github("pbreheny/visreg")
 ```
 
+Note that version 3.0 of visreg introduced a number of [breaking changes](https://pbreheny.github.io/visreg/articles/migrating-to-3-0.html); if you wish to install the "legacy" version of visreg, version 2.8.1 was the final CRAN release before these changes took place:
+
+```r
+remotes::install_version("visreg", "2.8.1")
+```
+
 ## Usage
 
 The basic usage is that you fit a model, for example:
@@ -39,8 +45,8 @@ and then you pass it to `visreg`:
 visreg(fit, "Wind")
 ```
 
-<p align="center">
-<img alt="img" src="https://pbreheny.github.io/visreg/articles/web/index_files/figure-html/unnamed-chunk-3-1.png" style="width: 50%;">
+<p align="center" class="cell-output-display">
+<img alt="img" src="https://pbreheny.github.io/visreg/articles/basic_files/figure-html/unnamed-chunk-3-1.png" width="672">
 </p>
 
 A more complex example, which uses the `gam()` function from **mgcv**:
@@ -48,11 +54,11 @@ A more complex example, which uses the `gam()` function from **mgcv**:
 ```r
 airquality$Heat <- cut(airquality$Temp, 3, labels=c("Cool", "Mild", "Hot"))
 fit <- gam(Ozone ~ s(Wind, by=Heat, sp=0.1), data=airquality)
-visreg(fit, "Wind", "Heat", gg=TRUE, ylab="Ozone")
+visreg(fit, "Wind", "Heat") + ylab("Ozone")
 ```
 
-<p align="center">
-<img alt="img" src="https://pbreheny.github.io/visreg/articles/web/index_files/figure-html/unnamed-chunk-4-1.png" style="margin:auto; width: 80%;">
+<p align="center" class="cell-output-display">
+<img alt="img" src="https://pbreheny.github.io/visreg/articles/index_files/figure-html/unnamed-chunk-4-1.png" width="672">
 </p>
 
 ## More information
